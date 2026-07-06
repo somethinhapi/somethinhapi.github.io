@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 防搜索引擎收录：不进搜索结果、不跟踪链接、不存快照 -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>Somethin Hapi</title>
+  <meta name="description" content="Somethin Hapi" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" href="./">Somethin Hapi</a>
+    </div>
+  </nav>
+
+  <!--
+  ================================================================
+  怎么加一篇新日志（写给未来的自己，访客看不到这段）
+  ================================================================
+  1. 在 posts/ 里新建一个 markdown 文件，例如 2026-08-01-something.md
+     （注意：标题不要写在正文里，标题只填在 posts.json 的 "title"，会自动显示且永远公开）
+  2. 在 posts.json 顶部加一段（越靠前越新）：
+       {
+         "slug": "something",
+         "title": "标题",
+         "date": "2026-08-01",
+         "summary": "一句话摘要",
+         "file": "2026-08-01-something.md"
+       }
+  3. 图片/音频放进 assets/，在正文里引用（路径相对于站点根目录）：
+       ![描述](assets/我的图片.jpg)
+       <audio controls src="assets/audio/xxx.m4a" style="width:100%"></audio>
+  4. push 到 GitHub，几十秒后线上就更新了。
+
+  ----------------------------------------------------------------
+  给日志上锁（可选：只锁音频，或锁整篇正文；标题始终公开）
+  ----------------------------------------------------------------
+  用 tools/lock.html —— 双击在浏览器里打开，密码只在你电脑上、不会上传。
+  · 只锁音频：选文件+密码 → 下载 xxx.m4a.enc → 放进 assets/audio/ →
+      正文里用这一行代替 <audio>：
+        <div class="locked-audio" data-src="assets/audio/xxx.m4a.enc"></div>
+  · 锁整篇：粘贴正文+密码 → 下载 xxx.md.enc → 放进 posts/ →
+      posts.json 里把 "file" 指向该 .enc，并加 "locked": true
+  重要：加密后，未加密的原始音频/正文绝不要 git add、不要推到 GitHub。
+        网上只能存在 .enc 密文。密码丢了内容就再也解不开（没有找回）。
+  ================================================================
+  -->
+
+  <main class="wrap">
+    <!-- list view -->
+    <section id="list-view">
+      <div class="hero" style="padding:56px 0 20px;">
+        <div class="eyebrow">Notes</div>
+        <h1 style="font-size:clamp(28px,5vw,42px);">日志</h1>
+        <p>在这里大声思考。</p>
+      </div>
+      <div class="posts" id="post-list">
+        <p class="empty">加载中…</p>
+      </div>
+    </section>
+
+    <!-- article view -->
+    <article class="article" id="article-view" style="display:none;">
+      <a class="back" href="./">← 返回日志</a>
+      <div class="meta" id="article-meta"></div>
+      <div id="article-body"></div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap" style="width:100%;">
+      <span>© <span id="year"></span> Somethin Hapi</span>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <!-- markdown renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="blog.js"></script>
+  <script>bootBlogPage();</script>
+</body>
+</html>
