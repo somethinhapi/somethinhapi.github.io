@@ -156,6 +156,42 @@ function initLockedAudios(root) {
   });
 }
 
+/* 把 <div class="locked-video" data-src="xxx.enc" data-hint="提示"> 占位符变成一个
+   密码门，输对密码后在浏览器里解密出 YouTube 视频 ID，并把视频直接嵌进本页面播放
+   （服务器上只有密文，输对密码前拿不到视频地址）。 */
+function initLockedVideos(root) {
+  root.querySelectorAll('.locked-video').forEach((el) => {
+    const src = el.getAttribute('data-src');
+    if (!src) return;
+    const hint = el.getAttribute('data-hint') || '';
+    el.innerHTML =
+      '<form class="lock">' +
+      (hint ? '<p class="lock-hint">提示：' + escapeHtml(hint) + '</p>' : '') +
+      '<div class="lock-row">' +
+      '<input type="password" class="lock-input" placeholder="输入密码" autocomplete="off" />' +
+      '<button type="submit" class="lock-btn">解锁</button>' +
+      '</div>' +
+      '<p class="lock-msg"></p>' +
+      '</form>';
+    wireLockForm(el.querySelector('.lock'), src, async (plainBuf) => {
+      const id = new TextDecoder().decode(plainBuf).trim();
+      const wrap = document.createElement('div');
+      wrap.className = 'video-embed';
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?rel=0';
+      iframe.title = '视频';
+      iframe.loading = 'lazy';
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute(
+        'allow',
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.allowFullscreen = true;
+      wrap.appendChild(iframe);
+      return wrap;
+    });
+  });
+}
+
 
 function parseTimestamp(value) {
   const parts = String(value).split(':').map(Number);
@@ -402,6 +438,7 @@ async function renderArticle(slug) {
       const holder = document.createElement('div');
       holder.innerHTML = marked.parse(md);
       initLockedAudios(holder); // 万一整篇里还嵌了单独锁的音频
+      initLockedVideos(holder); // 万一整篇里还嵌了单独锁的视频
       initAudioTranscripts(holder);
       return holder;
     });
@@ -416,6 +453,7 @@ async function renderArticle(slug) {
     const md = await res.text();
     bodyEl.innerHTML = titleHtml + marked.parse(md);
     initLockedAudios(bodyEl);
+    initLockedVideos(bodyEl);
     initAudioTranscripts(bodyEl);
   } catch (e) {
     bodyEl.innerHTML = titleHtml + '<p>正文加载失败。</p>';
