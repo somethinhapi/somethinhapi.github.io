@@ -1,5 +1,14 @@
 [
   {
+    "slug": "blog-7",
+    "title": "Blog.7",
+    "date": "2026-07-11",
+    "summary": "",
+    "file": "2026-07-11-blog-7.md.enc",
+    "locked": true,
+    "hint": "我的启蒙电影"
+  },
+  {
     "slug": "blog-6",
     "title": "Blog.6",
     "date": "2026-07-10",

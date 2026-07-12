@@ -95,10 +95,11 @@ async function decryptData(buf, password) {
   return crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
 }
 
-function lockFormHtml(actionLabel) {
+function lockFormHtml(actionLabel, hint) {
   return (
     '<form class="lock">' +
     '<p class="lock-label">🔒 ' + escapeHtml(actionLabel) + '需要密码</p>' +
+    (hint ? '<p class="lock-hint">' + escapeHtml(hint) + '</p>' : '') +
     '<div class="lock-row">' +
     '<input type="password" class="lock-input" placeholder="输入密码" autocomplete="off" />' +
     '<button type="submit" class="lock-btn">解锁</button>' +
@@ -432,7 +433,7 @@ async function renderArticle(slug) {
 
   // 整篇加密：posts.json 里标了 "locked": true，file 指向 .enc 密文
   if (post.locked) {
-    bodyEl.innerHTML = titleHtml + lockFormHtml('查看这篇日志');
+    bodyEl.innerHTML = titleHtml + lockFormHtml('查看这篇日志', post.hint);
     wireLockForm(bodyEl.querySelector('.lock'), 'posts/' + post.file, async (plainBuf) => {
       const md = new TextDecoder().decode(plainBuf);
       const holder = document.createElement('div');
