@@ -139,6 +139,36 @@ a:hover { text-decoration: underline; }
 .article li { margin: 6px 0; }
 .article audio { width: 100%; margin: 8px 0 4px; }
 
+/* ---------- 表格（问答之类） ---------- */
+.article .table-wrap { overflow-x: auto; margin: 18px 0 24px; }
+.article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.article thead th {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .05em;
+  text-align: left;
+}
+.article th, .article td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.article tbody tr:last-child td { border-bottom: none; }
+.article tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 30%, transparent); }
+/* 第一列（问题）稍微收窄、加重，让问答对比更清楚 */
+.article td:first-child, .article th:first-child { width: 42%; color: var(--ink); font-weight: 500; }
+.article td:last-child { color: var(--muted); }
+
 .empty { color: var(--muted); padding: 40px 0; }
 
 /* ---------- 加密内容的解锁表单 ---------- */
