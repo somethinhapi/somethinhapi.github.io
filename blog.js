@@ -463,14 +463,57 @@ async function renderArticle(slug) {
   window.scrollTo(0, 0);
 }
 
+/* 记住/恢复列表页的滚动位置：看完某篇日志返回后，停在原来的位置，
+   不用每次都从顶部往下滑。用 sessionStorage，只在本次浏览会话里有效。 */
+function saveListScroll() {
+  try {
+    sessionStorage.setItem('listScrollY', String(window.scrollY || window.pageYOffset || 0));
+  } catch (e) {}
+}
+function restoreListScroll(tries) {
+  let y = 0;
+  try { y = parseInt(sessionStorage.getItem('listScrollY') || '0', 10) || 0; } catch (e) {}
+  if (!y) return;
+  const html = document.documentElement;
+  // 关键：真正把平滑关掉（本浏览器里 scrollTo 的 behavior:'auto' 覆盖不了 CSS）
+  html.style.scrollBehavior = 'auto';
+  window.scrollTo(0, y);
+  void window.scrollY; // 强制同步回流，确保这次瞬时滚动先生效
+  // 布局/字体还没撑开时可能滚不到位，重试几帧直到到位
+  if (Math.abs(window.scrollY - y) > 2 && (tries || 0) < 30) {
+    requestAnimationFrame(() => restoreListScroll((tries || 0) + 1));
+  } else {
+    // 到位后再恢复平滑（延迟，避免把本次跳转也变成动画）
+    setTimeout(() => { html.style.scrollBehavior = ''; }, 80);
+  }
+}
+
 /* Entry point for blog.html */
 function bootBlogPage() {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   const params = new URLSearchParams(location.search);
   const slug = params.get('p');
   if (slug) {
     renderArticle(slug);
   } else {
-    renderPostList(document.getElementById('post-list'));
+    const listView = document.getElementById('list-view');
+    // 在列表页时持续记录滚动位置（节流）
+    let t;
+    window.addEventListener('scroll', () => {
+      if (listView && listView.style.display !== 'none') {
+        clearTimeout(t);
+        t = setTimeout(saveListScroll, 100);
+      }
+    }, { passive: true });
+    // 点进某篇之前，立刻记录当前位置（比节流更可靠）
+    document.addEventListener('click', (e) => {
+      if (e.target.closest && e.target.closest('a.post-item')) saveListScroll();
+    }, true);
+    // 渲染完列表再恢复到上次的位置（load 后再确认一次，防止时机竞态）
+    Promise.resolve(renderPostList(document.getElementById('post-list'))).then(() => {
+      restoreListScroll();
+      window.addEventListener('load', () => restoreListScroll(), { once: true });
+    });
   }
 }
 

@@ -50,7 +50,9 @@ a:hover { text-decoration: underline; }
   justify-content: space-between;
   height: 58px;
 }
-.brand { font-weight: 700; font-size: 16.5px; color: var(--ink); letter-spacing: .01em; }
+.brand { font-weight: 700; font-size: 16.5px; color: var(--ink); letter-spacing: .01em; display: inline-flex; align-items: center; }
+/* 「Somethin Hapi」手写体矢量图（字体本身不外传） */
+.brand-mark { display: block; height: 17px; width: auto; color: var(--ink); }
 .brand:hover { text-decoration: none; color: var(--accent); }
 .brand .dot { color: var(--accent); }
 
@@ -63,6 +65,8 @@ a:hover { text-decoration: underline; }
   text-transform: uppercase;
   margin-bottom: 14px;
 }
+/* 「Notes」手写体矢量图 */
+.notes-mark { display: block; height: 12px; width: auto; color: var(--accent); }
 .hero h1 {
   font-family: var(--serif);
   line-height: 1.15;
