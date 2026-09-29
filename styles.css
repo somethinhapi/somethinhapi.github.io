@@ -193,10 +193,6 @@ a:hover { text-decoration: underline; }
 .article .notes .note p:last-child { margin-bottom: 0; }
 .article .notes .note ul { margin: 10px 0 0; padding-left: 20px; }
 .article .notes .note li { margin: 6px 0; }
-.article .notes .note:nth-child(4n+1) { background: rgba(253, 243, 216, 0.5); }
-.article .notes .note:nth-child(4n+2) { background: rgba(253, 230, 234, 0.5); }
-.article .notes .note:nth-child(4n+3) { background: rgba(228, 241, 230, 0.5); }
-.article .notes .note:nth-child(4n+4) { background: rgba(228, 238, 251, 0.5); }
 
 .empty { color: var(--muted); padding: 40px 0; }
 
