@@ -174,6 +174,27 @@ a:hover { text-decoration: underline; }
 .article td:first-child, .article th:first-child { width: 42%; color: var(--ink); font-weight: 500; }
 .article td:last-child { color: var(--muted); }
 
+/* ---------- 便签卡片（把一条条编号内容变成一张张卡片）---------- */
+.article .notes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 18px 0 32px;
+}
+.article .notes .note {
+  background: var(--surface);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  box-shadow: 0 4px 18px rgba(27, 36, 48, 0.05);
+}
+.article .notes .note p { margin: 0 0 10px; }
+.article .notes .note p:last-child { margin-bottom: 0; }
+.article .notes .note ul { margin: 10px 0 0; padding-left: 20px; }
+.article .notes .note li { margin: 6px 0; }
+
 .empty { color: var(--muted); padding: 40px 0; }
 
 /* ---------- 加密内容的解锁表单 ---------- */
