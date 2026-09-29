@@ -119,6 +119,7 @@ a:hover { text-decoration: underline; }
 .article h1 { font-family: var(--serif); font-size: 34px; line-height: 1.2; margin: 6px 0 26px; }
 .article h2 { font-family: var(--serif); font-size: 24px; margin: 40px 0 12px; }
 .article h3 { font-size: 19px; margin: 30px 0 10px; }
+.article .note-title { font-family: var(--sans); font-size: 24px; font-weight: 700; margin: 10px 0 26px; }
 .article p { margin: 0 0 18px; }
 .article img { max-width: 100%; border-radius: 12px; display: block; margin: 24px 0; }
 .article figure { margin: 24px 0; }
