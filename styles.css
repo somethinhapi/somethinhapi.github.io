@@ -174,21 +174,36 @@ a:hover { text-decoration: underline; }
 .article td:first-child, .article th:first-child { width: 42%; color: var(--ink); font-weight: 500; }
 .article td:last-child { color: var(--muted); }
 
-/* ---------- 便签卡片（把一条条编号内容变成一张张卡片）---------- */
+/* ---------- 便签卡片（把一条条编号内容变成一张张卡片，磨砂玻璃质感）---------- */
 .article .notes {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin: 18px 0 32px;
 }
+.article .notes::before,
+.article .notes::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: -1;
+  pointer-events: none;
+}
+.article .notes::before { background: #ffd7e6; top: -30px; left: -50px; opacity: .5; }
+.article .notes::after { background: #cfe6ff; bottom: -30px; right: -50px; opacity: .5; }
 .article .notes .note {
-  background: var(--surface);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--radius);
   padding: 18px 22px;
-  box-shadow: 0 4px 18px rgba(27, 36, 48, 0.05);
+  box-shadow: 0 4px 18px rgba(27, 36, 48, 0.06);
 }
 .article .notes .note p { margin: 0 0 10px; }
 .article .notes .note p:last-child { margin-bottom: 0; }
